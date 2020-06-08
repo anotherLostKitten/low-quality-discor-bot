@@ -1,0 +1,1 @@
+uses https://jokes.one/api/joke/ for low quality jokesd
