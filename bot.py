@@ -27,9 +27,17 @@ async def ping(r,h):
     elif member.id==c.user.id:
         await h.send("im not fucking pinging myself retar")
     else:
-        txt=member.mention+" "+" ".join(r[2:]if len(r)>1 and r[1].isdigit()else r[1:])
-        for i in range(0,int(r[1])if len(r)>1 and r[1].isdigit()else 1):
-            await h.send(txt)
+        if len(r)>1 and r[1].isdigit():
+            n=int(r[1])
+            if(n>12):
+                await h.send("im literally not doing that its too much effort")
+            else:
+                txt=member.mention+" "+" ".join(r[2:])
+                for i in range(0,n):
+                    await h.send(txt)
+        else:
+            await h.send(member.mention+" "+" ".join(r[1:]))
+        
 async def insult(r,h):
     await h.send("yo i havent implemented this feature yet holy shit")
 async def bazinga(r,h):
