@@ -29,22 +29,21 @@ async def on_message(m):
     elif(c.user.mentioned_in(m)):
         await m.channel.send("stop fucking pinging me like holy shit")
 def mbr(uid,m):
+    if(uid==c.user.id):
+        return None
     try:
-        return discord.utils.get(m.guild.members,id=int(uid.strip("<>!@")))
+        return discord.utils.get(m.guild.members,id=(uid if type(uid)==int else int(uid.strip("<>!@"))))
     except ValueError:
         return None
         
 async def ping(r,m):
-    print(r)
     member=mbr(r[0],m)
     if member==None:
         await m.channel.send(choice(("yo idk who the frick that is","???????? literally no? ur stupid?","fun fact: im not fucking pinging whatever the fuck that is supposed to be you actual ritardando")))
-    elif member.id==c.user.id:
-        await m.channel.send("im not fucking pinging myself retar")
     else:
         if len(r)>1 and r[1].isdigit():
             n=int(r[1])
-            if(n>12):
+            if n>12 or n<1:
                 await m.channel.send(choice(("im literally not doing that its too much effort","tbh i can only count to 12 (get it because pedophilia)","holy shit if you want to ping them so bad do it yourszzelf")))
             elif okping(m.author.id):
                 txt=member.mention+" "+" ".join(r[2:])
@@ -130,8 +129,59 @@ async def bp_steal(r,m):
                 await m.channel.send("you are unsuccesful in your attempt to theft because youre are terrible at this")
         else:
             await m.channel.send("do to ur reacent theft attempt ur on the fbi most wanted list rn so try again laterr")
+async def bp_tts(r,m): #5
+    if dbs.get_bp(m.author.id)<5:
+        await m.channel.send("ur too poor")
+    else:
+        await m.channel.send("yo holly shit i have yet to implement this benson points shop feature so stop pinging me ok? ok?")
+async def bp_nick(r,m): #1
+    if dbs.get_bp(m.author.id)<1:
+        await m.channel.send("ur too poor")
+    else:
+        e=mbr(r[0],m)
+        if(e==None):
+            await m.channel.send("idk who that is")
+        else:
+            txt=" ".join(r[1:])[:32]
+            try:
+                await e.edit(reason="benson points",nick=txt if txt!=""else None)
+                dbs.mod_bp(m.author.id,-1,True)
+                await m.channel.send(e.mention+" hahahahaha bazinga")
+            except discord.errors.Forbidden:
+                await m.channel.send("very sadly discor does not allow you to change the nickname of the server owner :(")
+async def bp_poster(r,m): #10
+    if dbs.get_bp(m.author.id)<10:
+        await m.channel.send("ur too poor")
+    else:
+        await m.channel.send("yo holly shit i have yet to implement this benson points shop feature so stop pinging me ok? ok?")
+async def bp_bc(r,m): #999
+    if dbs.get_bp(m.author.id)<999:
+        await m.channel.send("ur much too poor")
+    else:
+        await m.channel.send("the real bengali children were the benson points we earned along the way")
+async def bp_ping(r,m): #100
+    if dbs.get_bp(m.author.id)<100:
+        await m.channel.send("ok so basically ur too poor")
+    else:
+            member=mbr(r[0],m)
+            if member==None:
+                await m.channel.send(choice(("yo idk who the frick that is","???????? literally no? ur stupid?","fun fact: im not fucking pinging whatever the fuck that is supposed to be you actual ritardando")))
+            else:
+                txt=member.mention+" "+" ".join(r[1:])
+                dbs.bp_mod(m.author.id,-100,True)
+                for i in range(0,69):
+                    await m.channel.send(txt)
 async def bp_shop(r,m):
-    await m.channel.send("yo i havent implemented this benson points feature yet holy shit")
+    shps=[bp_tts,bp_nick,bp_poster,bp_bc,bp_ping]
+    if len(r)==0 or not r[0].isdigit():
+        await m.channel.send("welcome to the benson poitns shop you could buy\n1. send tts message for 5 min (5)\n2. change someone';s nickname (1)\n3. become featured in the next computer interacoint club poster (10)\n4. bengali children (999)\n5. ping someone 69 times (100)")
+    else:
+        try:
+            await shps[int(r[0])-1](r[1:],m)
+        except IndexError:
+            await m.channel.send("literally not an option")
+async def bp_top(r,m):
+    await m.channel.send("besnos points leaderboar\n"+"\n".join("{}: {} with {}".format(i+1,mbr(e[0],m).mention,e[1])for i,e in enumerate(dbs.top_bp())))
 async def bp_mod(r,m):
     if(not m.author.guild_permissions.administrator):    
         await m.channel.send("yarnt admin frick off")
@@ -160,7 +210,8 @@ async def bp_parse(r,m):
           "steal":bp_steal,
           "shop":bp_shop,
           "modify":bp_mod,
-          "show":bp_show
+          "show":bp_show,
+          "top":bp_top
     }
     if(len(r)==0 or not r[0]in cmds):
         await bp_show(r,m)

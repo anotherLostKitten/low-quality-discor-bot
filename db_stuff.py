@@ -30,7 +30,8 @@ def mod_bp(uid,dx,neg):
         c.execute("UPDATE bp SET pp = ? WHERE bp.id = ?;", (get_bp(uid)+dx,uid))
     DB.commit()
     return True
-
+def top_bp():
+    return c.execute("SELECT * FROM bp ORDER BY pp DESC;").fetchall()[:3]
 def close_db():
     print("closing database")
     DB.close()
