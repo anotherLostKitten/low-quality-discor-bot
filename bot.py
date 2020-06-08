@@ -1,8 +1,9 @@
-from time import time
+from time import time, sleep
 from urllib import request, parse
 from urllib.error import HTTPError
 import json #tongue
 from random import randint, choice
+import asyncio
 
 import discord
 
@@ -37,6 +38,9 @@ def mbr(uid,m):
         return None
         
 async def ping(r,m):
+    if len(r)==0:
+        await m.channel.send("ping wat")
+        return
     member=mbr(r[0],m)
     if member==None:
         await m.channel.send(choice(("yo idk who the frick that is","???????? literally no? ur stupid?","fun fact: im not fucking pinging whatever the fuck that is supposed to be you actual ritardando")))
@@ -76,8 +80,19 @@ async def fact(r,m):
 async def insult(r,m):
     await m.channel.send("yo i havent implemented this feature yet holy shit")
 async def bazinga(r,m):
-    await m.channel.send("yo i havent implemented this feature yet holy shit")
+    if len(r)==0:
+        await m.channel.send("bazing wat")
+        return
+    e=mbr(r[0],m)
+    if e==None:
+        await m.channel.send("idk hweo that is")
+    else:
+        asyncio.create_task(btbt(m.channel,e.mention+" bazinga"))
+        await m.channel.send("ok")
 
+async def btbt(ch,tx):
+    await asyncio.sleep(randint(3600,7200))
+    await ch.send(tx)
 async def bp_give(r,m):
     try:
         v=int(r[1])

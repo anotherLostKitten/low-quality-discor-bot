@@ -1,4 +1,4 @@
 run:
-	python3 bot.py
+	python3.8 bot.py
 clean:
-	rm -rf *~* *.pyc *.pyd *.pyo \#* *\#
+	rm -rf *~* *.pyc *.pyd *.pyo \#* *\# __pycache__/
