@@ -115,16 +115,19 @@ async def bp_steal(r,m):
         elif dbs.get_bp(e.id)/7<v:
             await m.channel.send("you cant steal that much money tho he too poor this isnt like fucking income tax or smthn")
         elif okping(m.author.id,steal_history,300):
-            if randint(0,1)==0:
+            r=randint(0,4)
+            if r==0:
                 dbs.mod_bp(m.author.id,v,True)
                 dbs.mod_bp(e.id,-v,True)
                 await m.channel.send("yo congrats fricking james bomd or whatever {} has {} benson points adn you have {}".format(e.mention,dbs.get_bp(e.id),dbs.get_bp(m.author.id)))
-            else:
+            elif r==1:
                 dbs.mod_bp(m.author.id,-v,True)
                 dbs.mod_bp(e.id,v,True)
                 await m.channel.send("ok so youre so frimcking bad at stealign shit you accidentally stole your own moneyt and gave it to {} who now has {} besnogne poisnt while you have {}".format(e.mention,dbs.get_bp(e.id),dbs.get_bp(m.author.id)))
                 if(dbs.get_bp(m.author.id)<0):
                     await m.channel.send("hahahahahaha holy shit you're so fucking bad at this you literally have negative benson points lmao be careful if you have too much negative benson points you might just get beaned for no reason")
+            else:
+                await m.channel.send("you are unsuccesful in your attempt to theft because youre are terrible at this")
         else:
             await m.channel.send("do to ur reacent theft attempt ur on the fbi most wanted list rn so try again laterr")
 async def bp_shop(r,m):
