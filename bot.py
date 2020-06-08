@@ -141,7 +141,7 @@ async def bp_steal(r,m):
                 if(dbs.get_bp(m.author.id)<0):
                     await m.channel.send("hahahahahaha holy shit you're so fucking bad at this you literally have negative benson points lmao be careful if you have too much negative benson points you might just get beaned for no reason")
             else:
-                await m.channel.send("you are unsuccesful in your attempt to theft because youre are terrible at this")
+                await m.channel.send("you try to themft but nothing happens")
         else:
             await m.channel.send("do to ur reacent theft attempt ur on the fbi most wanted list rn so try again laterr")
 async def bp_tts(r,m): #5
@@ -200,6 +200,7 @@ async def bp_top(r,m):
 async def bp_mod(r,m):
     if(not m.author.guild_permissions.administrator):    
         await m.channel.send("yarnt admin frick off")
+        return
     try:
         v=int(r[1])
     except ValueError:
