@@ -1,3 +1,5 @@
+import atexit
+
 import sqlite3
 
 DB=sqlite3.connect("cic.db")
@@ -21,7 +23,7 @@ def mod_bp(uid,dx,neg):
     if(not in_bp(uid)):
         if(not neg and dx<0):
             return False
-        c.execute("INERT INTO bp VALUES (?, ?);",(uid,dx))
+        c.execute("INSERT INTO bp VALUES (?, ?);",(uid,dx))
     else:
         if(not neg and dx<0 and get_bp(uid)+dx<0):
             return False
@@ -29,7 +31,10 @@ def mod_bp(uid,dx,neg):
     DB.commit()
     return True
 
-
+def close_db():
+    print("closing database")
+    DB.close()
+atexit.register(close_db)
 
 
 

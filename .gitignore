@@ -4,3 +4,4 @@
 token.txt
 *.py[cod]
 cic.db
+__pycache__/

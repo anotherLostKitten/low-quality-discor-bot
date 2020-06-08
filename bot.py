@@ -13,7 +13,8 @@ with open("token.txt")as f:
     jrr=f.read()
 #print("using token",jrr)
 ping_history={}
-    
+steal_history={}
+
 @c.event
 async def on_ready():
     print(c.user.name,c.user.id,c.user.mention)
@@ -55,9 +56,10 @@ async def ping(r,m):
             await m.channel.send(member.mention+" "+" ".join(r[1:]))
         else:
             await m.channel.send("yo i literally just did that retard")
-def okping(uid):
-    e=not uid in ping_history or time()-ping_history[uid]>60
-    ping_history[uid]=time()
+def okping(uid,thing=ping_history,dt=60):
+    e=not uid in thing or time()-thing[uid]>dt
+    if e:
+        thing[uid]=time()
     return e
 async def fact(r,m):
     try:
@@ -78,9 +80,53 @@ async def bazinga(r,m):
     await m.channel.send("yo i havent implemented this feature yet holy shit")
 
 async def bp_give(r,m):
-    await m.channel.send("yo i havent implemented this benson points feature yet holy shit")
+    try:
+        v=int(r[1])
+    except ValueError:
+        await m.channel.send("literally not a number dumbass")
+        return
+    if v<0:
+        await m.channel.send("haha look at you your going to give him a negative number so you steal his benson points haha waht an actual fucking gneious except no you fucking arnt you fucking stupid of subhuman filth")
+    else:
+        e=mbr(r[0],m)
+        if(e==None):
+            await m.channel.send("yo idk who that is? retar? idyo? stupi?")
+        elif v==0 or e==m.author:
+            await m.channel.send("nice noop")
+        elif dbs.mod_bp(m.author.id,-v,False):
+            dbs.mod_bp(e.id,v,True)
+            await m.channel.send("after ur generous donation {} has {} benson points adn you have {}".format(e.mention,dbs.get_bp(e.id),dbs.get_bp(m.author.id)))
+        else:
+            await m.channel.send("yuoure to poor check kiting looking ass")
 async def bp_steal(r,m):
-    await m.channel.send("yo i havent implemented this benson points feature yet holy shit")
+    try:
+        v=int(r[1])
+    except ValueError:
+        await m.channel.send("literally not a number dumbass")
+        return
+    if v<0:
+        await m.channel.send("basically use the give command instead dumbass")
+    else:
+        e=mbr(r[0],m)
+        if(e==None):
+            await m.channel.send("yo idk who that is? retar? idyo? stupi?")
+        elif v==0 or e==m.author:
+            await m.channel.send("nice noop")
+        elif dbs.get_bp(e.id)/7<v:
+            await m.channel.send("you cant steal that much money tho he too poor this isnt like fucking income tax or smthn")
+        elif okping(m.author.id,steal_history,300):
+            if randint(0,1)==0:
+                dbs.mod_bp(m.author.id,v,True)
+                dbs.mod_bp(e.id,-v,True)
+                await m.channel.send("yo congrats fricking james bomd or whatever {} has {} benson points adn you have {}".format(e.mention,dbs.get_bp(e.id),dbs.get_bp(m.author.id)))
+            else:
+                dbs.mod_bp(m.author.id,-v,True)
+                dbs.mod_bp(e.id,v,True)
+                await m.channel.send("ok so youre so frimcking bad at stealign shit you accidentally stole your own moneyt and gave it to {} who now has {} besnogne poisnt while you have {}".format(e.mention,dbs.get_bp(e.id),dbs.get_bp(m.author.id)))
+                if(dbs.get_bp(m.author.id)<0):
+                    await m.channel.send("hahahahahaha holy shit you're so fucking bad at this you literally have negative benson points lmao be careful if you have too much negative benson points you might just get beaned for no reason")
+        else:
+            await m.channel.send("do to ur reacent theft attempt ur on the fbi most wanted list rn so try again laterr")
 async def bp_shop(r,m):
     await m.channel.send("yo i havent implemented this benson points feature yet holy shit")
 async def bp_mod(r,m):
