@@ -4,6 +4,7 @@ from urllib.error import HTTPError
 import json #tongue
 from random import randint, choice
 import asyncio
+from os import system
 
 import discord
 
@@ -94,6 +95,9 @@ async def btbt(ch,tx):
     await asyncio.sleep(randint(3600,7200))
     await ch.send(tx)
 async def bp_give(r,m):
+    if(len(r)<2):
+        await m.channel.send("not enough arguments ritardando")
+        return
     try:
         v=int(r[1])
     except ValueError:
@@ -113,6 +117,9 @@ async def bp_give(r,m):
         else:
             await m.channel.send("yuoure to poor check kiting looking ass")
 async def bp_steal(r,m):
+    if(len(r)<2):
+        await m.channel.send("not enough arguments ritardando")
+        return
     try:
         v=int(r[1])
     except ValueError:
@@ -168,6 +175,7 @@ async def bp_poster(r,m): #10
     if dbs.get_bp(m.author.id)<10:
         await m.channel.send("ur too poor")
     else:
+        await m.author.avatar_url_as(format='png',size=256).save("avatar.png")
         await m.channel.send("yo holly shit i have yet to implement this benson points shop feature so stop pinging me ok? ok?")
 async def bp_bc(r,m): #999
     if dbs.get_bp(m.author.id)<999:
@@ -186,10 +194,15 @@ async def bp_ping(r,m): #100
                 dbs.bp_mod(m.author.id,-100,True)
                 for i in range(0,69):
                     await m.channel.send(txt)
+async def bp_slow(r,m):
+    if dbs.get_bp(m.author.id)<300:
+        await m.channel.send("ur much too poor")
+    else:
+        await m.channel.send("the real bengali children were the benson points we earned along the way")
 async def bp_shop(r,m):
-    shps=[bp_tts,bp_nick,bp_poster,bp_bc,bp_ping]
+    shps=[bp_tts,bp_nick,bp_poster,bp_bc,bp_ping,bp_slow]
     if len(r)==0 or not r[0].isdigit():
-        await m.channel.send("welcome to the benson poitns shop you could buy\n1. send tts message for 5 min (5)\n2. change someone';s nickname (1)\n3. become featured in the next computer interacoint club poster (10)\n4. bengali children (999)\n5. ping someone 69 times (100)")
+        await m.channel.send("welcome to the benson poitns shop you could buy\n1. send tts message for 5 min (5)\n2. change someone';s nickname (1)\n3. become featured in the next computer interacoint club poster (10)\n4. bengali children (999)\n5. ping someone 69 times (100)\n6. put the discor in slow mdoe for 5 min (300)")
     else:
         try:
             await shps[int(r[0])-1](r[1:],m)
@@ -198,6 +211,9 @@ async def bp_shop(r,m):
 async def bp_top(r,m):
     await m.channel.send("besnos points leaderboar\n"+"\n".join("{}: {} with {}".format(i+1,mbr(e[0],m).mention,e[1])for i,e in enumerate(dbs.top_bp())))
 async def bp_mod(r,m):
+    if(len(r)<2):
+        await m.channel.send("not enough arguments ritardando")
+        return
     if(not m.author.guild_permissions.administrator):    
         await m.channel.send("yarnt admin frick off")
         return
