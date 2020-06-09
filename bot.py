@@ -155,18 +155,17 @@ async def bp_tts(r,m): #5
     if dbs.get_bp(m.author.id)<5:
         await m.channel.send("ur too poor")
     else:
-        await m.channel.send("yo holly shit i have yet to implement this benson points shop feature so stop pinging me ok? ok?")
         ttsp=discord.Permissions(permissions=0,send_tts_messages=True)
         r=discord.utils.get(m.guild.roles,permissions=ttsp)
         if(r==None):
             r=await m.guild.create_role(reason="bot tts thing",name="tts",permissions=ttsp,hoist=True,mentionable=True)
         asyncio.create_task(btts(m,r))
-        dbs.mod_dp(m.author.id,-5,True)
+        dbs.mod_bp(m.author.id,-5,True)
         
 async def btts(m,r):
     await m.author.add_roles(r)
     await m.channel.send("you're tts begins")
-    await asyncio.sleep(30)
+    await asyncio.sleep(300)
     await m.author.remove_roles(r)
     await m.channel.send(m.author.mention+" your reign of tterors ends")
     
@@ -202,7 +201,7 @@ async def bp_poster(r,m): #10
         system("convert a.ppm avatar.png")
         await m.channel.send(m.author.mention+" ok here you go lamer",file=discord.File("avatar.png"))
         system("rm -rf a.ppm avatar.png")
-        dbs.bp_mod(m.author.id,-10,True)
+        dbs.mod_bp(m.author.id,-10,True)
 async def bp_bc(r,m): #999
     if dbs.get_bp(m.author.id)<999:
         await m.channel.send("ur much too poor")
@@ -224,7 +223,14 @@ async def bp_slow(r,m):
     if dbs.get_bp(m.author.id)<300:
         await m.channel.send("ur much too poor")
     else:
-        await m.channel.send("the real bengali children were the benson points we earned along the way")
+        dbs.mod_bp(m.author.id,-300,True)
+        asyncio.create_task(btsm(m))
+async def btsm(m):
+    await m.channel.send("ok lamers its slow mode time")
+    await m.channel.edit(slowmode_delay=30)
+    await asyncio.sleep(300)
+    await m.channel.edit(slowmode_delay=0)
+    await m.channel.send("ok slow mode go bye bye now")
 async def bp_shop(r,m):
     shps=[bp_tts,bp_nick,bp_poster,bp_bc,bp_ping,bp_slow]
     if len(r)==0 or not r[0].isdigit():
