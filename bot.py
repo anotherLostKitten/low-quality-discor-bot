@@ -156,6 +156,20 @@ async def bp_tts(r,m): #5
         await m.channel.send("ur too poor")
     else:
         await m.channel.send("yo holly shit i have yet to implement this benson points shop feature so stop pinging me ok? ok?")
+        ttsp=discord.Permissions(permissions=0,send_tts_messages=True)
+        r=discord.utils.get(m.guild.roles,permissions=ttsp)
+        if(r==None):
+            r=await m.guild.create_role(reason="bot tts thing",name="tts",permissions=ttsp,hoist=True,mentionable=True)
+        asyncio.create_task(btts(m,r))
+        dbs.mod_dp(m.author.id,-5,True)
+        
+async def btts(m,r):
+    await m.author.add_roles(r)
+    await m.channel.send("you're tts begins")
+    await asyncio.sleep(30)
+    await m.author.remove_roles(r)
+    await m.channel.send(m.author.mention+" your reign of tterors ends")
+    
 async def bp_nick(r,m): #1
     if dbs.get_bp(m.author.id)<1:
         await m.channel.send("ur too poor")
@@ -176,7 +190,19 @@ async def bp_poster(r,m): #10
         await m.channel.send("ur too poor")
     else:
         await m.author.avatar_url_as(format='png',size=256).save("avatar.png")
-        await m.channel.send("yo holly shit i have yet to implement this benson points shop feature so stop pinging me ok? ok?")
+        system("convert avatar.png a.ppm")
+        with open("poster.ppm","rb")as f:
+            p=bytearray(f.read())
+        with open("a.ppm","rb")as f:
+            a=f.read()
+        for i in range(0,256):
+            p[452172+1920*i:452940+1920*i]=a[15+768*i:783+768*i]
+        with open("a.ppm","wb")as f:
+            f.write(p)
+        system("convert a.ppm avatar.png")
+        await m.channel.send(m.author.mention+" ok here you go lamer",file=discord.File("avatar.png"))
+        system("rm -rf a.ppm avatar.png")
+        dbs.bp_mod(m.author.id,-10,True)
 async def bp_bc(r,m): #999
     if dbs.get_bp(m.author.id)<999:
         await m.channel.send("ur much too poor")
